@@ -5,7 +5,10 @@ import (
 )
 
 func New(input string) *lexer {
-	return &lexer{input: input}
+	l := &lexer{input: input}
+	l.readChar()
+
+	return l
 }
 
 type lexer struct {
@@ -15,40 +18,46 @@ type lexer struct {
 	ch           byte
 }
 
-func (l *lexer) NextToken() token.Token {
-	var literal string
-	var tokenType token.Type
-
-	if l.chPosition >= len(l.input) {
-		literal = ""
+func (l *lexer) readChar() {
+	if l.readPosition >= len(l.input) {
+		l.ch = 0 // represents NUL in ASCII
 	} else {
-		l.ch = l.input[l.chPosition]
-		literal = string(l.ch)
+		l.ch = l.input[l.readPosition]
 	}
 
-	switch literal {
-	case "=":
+	l.chPosition = l.readPosition // chPosition always points to the current char position
+	l.readPosition += 1           // readPosition always points to next char to read
+}
+
+func (l *lexer) NextToken() token.Token {
+	var tokenType token.Type
+	literal := string(l.ch)
+
+	switch l.ch {
+	case '=':
 		tokenType = token.ASSIGN
-	case "+":
+	case '+':
 		tokenType = token.PLUS
-	case "(":
+	case '(':
 		tokenType = token.LPAREN
-	case ")":
+	case ')':
 		tokenType = token.RPAREN
-	case "{":
+	case '{':
 		tokenType = token.LBRACE
-	case "}":
+	case '}':
 		tokenType = token.RBRACE
-	case ",":
+	case ',':
 		tokenType = token.COMMA
-	case ";":
+	case ';':
 		tokenType = token.SEMICOLON
-	case "":
+	case 0:
 		tokenType = token.EOF
+		literal = ""
 	}
 
 	result := token.Token{Type: tokenType, Literal: literal}
-	l.chPosition += 1
+
+	l.readChar()
 
 	return result
 }
