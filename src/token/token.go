@@ -1,34 +1,47 @@
 package token
 
-type TokenType string
+// Type is a type alias for a string
+type Type string
 
+// Token is a value describing the type of token, and its value
 type Token struct {
-	Type    TokenType
+	Type    Type
 	Literal string
 }
 
 const (
+	// ILLEGAL signifies an unknown token
 	ILLEGAL = "ILLEGAL"
-	EOF     = "EOF"
+	// EOF signifies the end of a file, indicating the parser can
+	// stop parsing
+	EOF = "EOF"
 
-	// identifiers and literals
+	// IDENT describes an identifier for a variable
 	IDENT = "IDENT"
-	INT   = "INT"
+	// INT describes values that are integers
+	INT = "INT"
 
-	// operators
+	// ASSIGN is the operator for assigning values
 	ASSIGN = "="
-	PLUS   = "+"
+	// PLUS is the operator for addition
+	PLUS = "+"
 
-	// delimiters
-	COMMA     = ","
+	// COMMA represents a literal comma
+	COMMA = ","
+	// SEMICOLON represents a literal comma
 	SEMICOLON = ";"
 
+	// LPAREN represents a literal comma
 	LPAREN = "("
+	// RPAREN represents a literal comma
 	RPAREN = ")"
+	// LBRACE represents a literal comma
 	LBRACE = "{"
+	// RBRACE represents a literal comma
 	RBRACE = "}"
 
-	// keywords
+	// FUNCTION is a keyword for declaring functions
 	FUNCTION = "FUNCTION"
-	LET      = "LET"
+	// LET is a keyword for declaring variables
+	LET = "LET"
 )
